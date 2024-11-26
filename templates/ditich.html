@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Di Tích - Khám Phá Di Tích Lịch Sử</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .location-card {
+            margin-bottom: 20px;
+        }
+
+        .location-card img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        header {
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1030;
+            font-size: 20px;
+            /* Đặt độ ưu tiên cao để nằm trên các thành phần khác */
+        }
+
+        /* Carousel full height */
+        .carousel,
+        .carousel-inner,
+        .carousel-item {
+            height: 100vh;
+        }
+
+        .carousel-item img {
+            object-fit: cover;
+            height: 100vh;
+            width: 100%;
+        }
+
+        /* Lớp overlay với opacity */
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            /* Đặt màu nền với opacity */
+            z-index: 1;
+            /* Đặt độ ưu tiên để nằm trên ảnh */
+        }
+
+        /* Overlay text */
+        .carousel-caption {
+            position: absolute;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #ffffff;
+            font-size: 2.5em;
+            font-weight: bold;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+            z-index: 2;
+            /* Đặt độ ưu tiên để nằm trên overlay */
+        }
+
+        /* Thêm khoảng cách cho phần nội dung bên dưới header */
+        .content {
+            margin-top: 100px;
+            /* Đặt margin-top để tránh bị che khuất bởi header */
+        }
+
+        #slogan,
+        .chunghien {
+            font-family: "Dancing Script", cursive;
+        }
+
+        #slogan {
+            font-size: 100px;
+        }
+
+        #title {
+            font-size: 30px;
+        }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="icon" href="/static/image/museum.png" type="image/png">
+
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #2b7a78;">
+            <a class="navbar-brand font-weight-bold chunghien" id="title">
+                <img src="https://img.icons8.com/ios-glyphs/30/ffffff/museum.png" alt="Logo" class="mr-2">
+                <span id="nameOfPage">Khám Phá Di Tích Lịch Sử</span>
+            </a>
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/home">Trang Chủ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/ditich">Di Tích</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Hành Trình</a>
+                    </li>
+                    <!-- <li class="nav-item">
+                        <a class="nav-link" href="LayDuLieuToaDo.html">GET Data From API</a>
+                    </li> -->
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container mt-5">
+        <h1 class="text-center my-4">Các Địa Danh Nổi Bật</h1>
+        <div id="locations"></div>
+    </div>
+
+    <script>
+        var locations = [
+            {
+                "address": "Bảo tàng Mỹ thuật TP.HCM",
+                "name": "Bảo tàng Mỹ thuật TP.HCM",
+                "latitude": "10.769893229296022",
+                "longitude": "106.69926378493048",
+                "image": "/static/image/Bao-tang-My-thuat-TP-HCM-ivivu.jpg",
+                "description": "Bảo tàng Mỹ thuật TP.HCM là nơi trưng bày các tác phẩm nghệ thuật quý giá của Việt Nam.",
+                "details_description": "Bảo tàng Mỹ thuật TP.HCM là một điểm đến không thể bỏ qua đối với những ai yêu thích nghệ thuật. Nằm ngay trung tâm thành phố, bảo tàng trưng bày một bộ sưu tập phong phú các tác phẩm nghệ thuật, từ tranh vẽ, điêu khắc cho đến các tác phẩm nghệ thuật đương đại. Du khách sẽ có cơ hội chiêm ngưỡng những tác phẩm đặc sắc của các họa sĩ nổi tiếng trong và ngoài nước, cũng như tìm hiểu về sự phát triển của mỹ thuật Việt Nam qua từng thời kỳ."
+            },
+            {
+                "address": "Bảo tàng Thành phố Hồ Chí Minh",
+                "name": "Bảo tàng Thành phố Hồ Chí Minh",
+                "latitude": "10.775978692274064",
+                "longitude": "106.69961645071125",
+                "image": "/static/image/hinh bao tang thanh pho ho chi minh.jpg",
+                "description": "Bảo tàng Thành phố Hồ Chí Minh giới thiệu lịch sử và văn hóa của thành phố qua các hiện vật.",
+                "details_description": "Bảo tàng Thành phố Hồ Chí Minh là nơi lưu giữ nhiều hiện vật có giá trị lịch sử, giúp du khách khám phá sâu về quá trình hình thành và phát triển của thành phố này. Với không gian trưng bày rộng lớn, bảo tàng không chỉ cung cấp thông tin về những sự kiện quan trọng mà còn phản ánh một phần đời sống văn hóa, xã hội của người dân Sài Gòn xưa và nay. Đây là điểm đến lý tưởng cho những ai muốn tìm hiểu về lịch sử của thành phố Hồ Chí Minh."
+            },
+            {
+                "address": "Lăng Tả quân Lê Văn Duyệt (Lăng Ông - Bà Chiểu)",
+                "name": "Lăng Tả quân Lê Văn Duyệt (Lăng Ông - Bà Chiểu)",
+                "latitude": "10.802130314865222",
+                "longitude": "106.69707050507084",
+                "image": "/static/image/lang ta quan.jpg",
+                "description": "Lăng Ông Bà Chiểu là một di tích lịch sử quan trọng ở TP.HCM, thờ phụng Tả quân Lê Văn Duyệt.",
+                "details_description": "Lăng Tả quân Lê Văn Duyệt, còn gọi là Lăng Ông - Bà Chiểu, là một trong những di tích lịch sử nổi bật tại Sài Gòn. Nằm ở quận Bình Thạnh, đây là nơi an nghỉ của Tả quân Lê Văn Duyệt, một nhân vật lịch sử quan trọng trong triều đại Nguyễn. Lăng có kiến trúc độc đáo, hòa quyện giữa văn hóa Việt Nam và Trung Hoa, là điểm đến lý tưởng để du khách khám phá về lịch sử cũng như nét đẹp tâm linh của Sài Gòn."
+            },
+            {
+                "address": "CHÙA NGỌC HOÀNG",
+                "name": "CHÙA NGỌC HOÀNG",
+                "latitude": "10.791989934733742",
+                "longitude": "106.69818480764916",
+                "image": "/static/image/chua ngoc hoang.jpeg",
+                "description": "Chùa Ngọc Hoàng, hay còn gọi là chùa Phước Hải, là một ngôi chùa nổi tiếng ở TP.HCM.",
+                "details_description": "Chùa Ngọc Hoàng, hay còn gọi là chùa Phước Hải, là một trong những ngôi chùa nổi tiếng ở Sài Gòn, mang đậm dấu ấn kiến trúc truyền thống của Việt Nam. Chùa nằm ở quận 1 và được xây dựng từ thế kỷ 19, nổi bật với các tượng Phật và các tác phẩm điêu khắc tinh xảo. Không chỉ là nơi cầu an, chùa còn là điểm du lịch tâm linh thu hút nhiều du khách tìm đến để chiêm bái và khám phá không gian thanh tịnh, yên bình."
+            },
+            {
+                "address": "Chùa Bà Thiên Hậu",
+                "name": "Chùa Bà Thiên Hậu",
+                "latitude": "10.824918365580874",
+                "longitude": "106.68528986651943",
+                "image": "/static/image/chua ba thien hau.jpg",
+                "description": "Chùa Bà Thiên Hậu là một ngôi chùa cổ, nơi thờ Bà Thiên Hậu, vị thần bảo trợ cho những người đi biển.",
+                "details_description": "Chùa Bà Thiên Hậu tọa lạc ở quận 5, là một trong những ngôi chùa cổ nhất và nổi tiếng nhất tại Sài Gòn. Ngôi chùa này được xây dựng để thờ Bà Thiên Hậu, một vị thần bảo trợ cho ngư dân và thương nhân. Với kiến trúc độc đáo mang đậm ảnh hưởng của văn hóa Trung Hoa, chùa Bà Thiên Hậu không chỉ thu hút khách hành hương mà còn là điểm du lịch hấp dẫn đối với những ai muốn tìm hiểu về tín ngưỡng và văn hóa Hoa ở Sài Gòn."
+            },
+            {
+                "address": "Ủy ban Nhân dân Thành phố Hồ Chí Minh",
+                "name": "Ủy ban Nhân dân Thành phố Hồ Chí Minh",
+                "latitude": "10.776601242663828",
+                "longitude": "106.70090551452533",
+                "image": "/static/image/uy ban nhan dan thanh pho.jpg",
+                "description": "Ủy ban Nhân dân Thành phố Hồ Chí Minh nằm tại Quận 1, là trung tâm hành chính của thành phố.",
+                "details_description": "Tòa nhà Ủy ban Nhân dân TP.HCM là một công trình kiến trúc biểu tượng của thành phố. Nằm trên đường Lê Lợi, gần Chợ Bến Thành, tòa nhà này được xây dựng theo phong cách kiến trúc cổ điển châu Âu, nổi bật với màu vàng ấm áp và các chi tiết chạm trổ tinh xảo. Đến đây, du khách không chỉ được chiêm ngưỡng một công trình kiến trúc ấn tượng mà còn có thể tìm hiểu thêm về vai trò của chính quyền thành phố trong việc phát triển Sài Gòn."
+            },
+            {
+                "address": "Bưu điện Thành phố Hồ Chí Minh",
+                "name": "Bưu điện Thành phố Hồ Chí Minh",
+                "latitude": "10.779878166040378",
+                "longitude": "106.69995864731223",
+                "image": "/static/image/buu dien thanh pho.jpg",
+                "description": "Bưu điện Thành phố Hồ Chí Minh là một trong những công trình kiến trúc cổ điển đẹp nhất tại TP.HCM.",
+                "details_description": "Bưu điện Thành phố Hồ Chí Minh, một trong những công trình cổ kính và đẹp mắt của thành phố, là điểm đến không thể bỏ qua. Được xây dựng vào cuối thế kỷ 19, công trình mang đậm ảnh hưởng của kiến trúc Pháp, với mái vòm cao và các cửa sổ lớn. Bưu điện không chỉ là nơi giao dịch bưu chính mà còn là một trong những địa danh du lịch nổi tiếng của Sài Gòn, hấp dẫn du khách bởi vẻ đẹp cổ điển và không gian rộng lớn, thoáng đãng."
+            },
+            {
+                "address": "Nhà thờ Đức Bà Sài Gòn",
+                "name": "Nhà thờ Đức Bà Sài Gòn",
+                "latitude": "10.779742129400322",
+                "longitude": "106.69903701880996",
+                "image": "/static/image/nha tho duc ba.jpg",
+                "description": "Nhà thờ Đức Bà Sài Gòn là một biểu tượng văn hóa và tôn giáo của thành phố.",
+                "details_description": "Nhà thờ Đức Bà Sài Gòn, một biểu tượng kiến trúc của thành phố, được xây dựng vào cuối thế kỷ 19 và mang đậm phong cách Romanesque. Với sắc hồng đặc trưng và những tháp chuông cao vút, nhà thờ là nơi thu hút không chỉ các tín đồ Công giáo mà còn là điểm tham quan của nhiều du khách. Đây là nơi bạn có thể chiêm ngưỡng kiến trúc cổ điển và không gian linh thiêng, tạo nên một cảm giác yên bình giữa lòng thành phố sôi động."
+            },
+            {
+                "address": "Chợ Bình Tây",
+                "name": "Chợ Bình Tây",
+                "latitude": "10.749655213007767",
+                "longitude": "106.65102842695318",
+                "image": "/static/image/cho binh tay.jpg",
+                "description": "Chợ Bình Tây nổi tiếng với các mặt hàng truyền thống và ẩm thực đa dạng.",
+                "details_description": "Chợ Bình Tây, nằm ở quận 6, là một trong những khu chợ nổi tiếng của Sài Gòn. Chợ được xây dựng theo kiến trúc cổ điển với mái vòm và các cột trụ lớn, nổi bật giữa lòng khu phố người Hoa. Đây là nơi bạn có thể tìm thấy những mặt hàng truyền thống như vải, gia vị, đồ thủ công mỹ nghệ, hay các món ăn đặc sản địa phương. Ghé thăm Chợ Bình Tây, du khách không chỉ được mua sắm mà còn cảm nhận được nhịp sống nhộn nhịp của khu vực người Hoa tại Sài Gòn."
+            },
+            {
+                "address": "Chợ Bến Thành",
+                "name": "Chợ Bến Thành",
+                "latitude": "10.772488517534407",
+                "longitude": "106.69805791035111",
+                "image": "/static/image/cho ben thanh.jpg",
+                "description": "Chợ Bến Thành là một trong những chợ nổi tiếng nhất tại TP.HCM.",
+                "details_description": "Chợ Bến Thành là một trong những biểu tượng du lịch của Sài Gòn, thu hút đông đảo du khách trong và ngoài nước. Chợ nằm ở vị trí trung tâm thành phố, bán đầy đủ các mặt hàng từ quần áo, đồ lưu niệm cho đến thực phẩm và đặc sản miền Nam. Với không gian rộng lớn và kiến trúc đặc sắc, Chợ Bến Thành không chỉ là nơi mua sắm mà còn là nơi du khách có thể trải nghiệm văn hóa địa phương và tìm hiểu về đời sống của người dân Sài Gòn."
+            },
+            {
+                "address": "Bến Nhà Rồng - Bảo Tàng Hồ Chí Minh (Chi nhánh TP.HCM)",
+                "name": "Bến Nhà Rồng - Bảo Tàng Hồ Chí Minh",
+                "latitude": "10.76823090834184",
+                "longitude": "106.70680404487891",
+                "image": "/static/image/ben nha rong.jpg",
+                "description": "Bến Nhà Rồng là nơi Bác Hồ ra đi tìm đường cứu nước, nay trở thành bảo tàng.",
+                "details_description": "Bến Nhà Rồng, nơi gắn liền với sự kiện lịch sử quan trọng của Chủ tịch Hồ Chí Minh, nay là một trong những địa điểm du lịch nổi tiếng của thành phố. Tại đây, du khách có thể tìm hiểu về cuộc đời và sự nghiệp của Hồ Chí Minh thông qua các hiện vật trưng bày trong bảo tàng. Với vị trí ven sông, Bến Nhà Rồng không chỉ là một di tích lịch sử mà còn là một không gian thư giãn tuyệt vời cho du khách."
+            },
+            {
+                "address": "Thảo Cầm Viên Sài Gòn",
+                "name": "Thảo Cầm Viên Sài Gòn",
+                "latitude": "10.78754466508065",
+                "longitude": "106.70527963295666",
+                "image": "/static/image/thao cam vien.jpg",
+                "description": "Thảo Cầm Viên Sài Gòn là một trong những vườn thú cổ nhất tại Việt Nam.",
+                "details_description": "Thảo Cầm Viên Sài Gòn, hay Sở thú Sài Gòn, là một trong những công viên lớn và lâu đời nhất tại thành phố. Nơi đây không chỉ là điểm đến yêu thích của trẻ em mà còn là nơi lý tưởng để khám phá thế giới động vật. Với diện tích rộng lớn, Thảo Cầm Viên có hơn 1000 loài động vật và cây cối từ khắp nơi trên thế giới, tạo nên một không gian xanh mát và đầy lý thú cho du khách."
+            },
+            {
+                "address": "Dinh Độc Lập",
+                "name": "Dinh Độc Lập",
+                "latitude": "10.77696289643182",
+                "longitude": "106.69535990362665",
+                "image": "/static/image/hinh dinh doc lap ok.jpg",
+                "description": "Dinh Độc Lập là nơi diễn ra nhiều sự kiện lịch sử quan trọng của Việt Nam.",
+                "details_description": "Dinh Độc Lập, hay Dinh Tổng thống cũ, là một di tích lịch sử quan trọng tại Sài Gòn. Nằm ở trung tâm thành phố, dinh được xây dựng vào năm 1966 và là trụ sở chính của chính quyền miền Nam Việt Nam. Dinh Độc Lập gắn liền với sự kiện lịch sử ngày 30 tháng 4 năm 1975, khi chiếc xe tăng của quân Giải phóng đâm vào cổng chính, đánh dấu sự kết thúc chiến tranh. Du khách đến đây sẽ được khám phá kiến trúc đồ sộ và tìm hiểu về những sự kiện lịch sử qua các phòng trưng bày, hiện vật. Đây là điểm đến không thể bỏ qua khi đến Sài Gòn."
+            }
+        ];
+
+
+        var locationsContainer = document.getElementById('locations');
+        locations.forEach(function (location) {
+            var card = document.createElement('div');
+            card.className = 'card location-card';
+            card.innerHTML = `
+                <img src="${location.image}" class="card-img-top" alt="${location.name}">
+                <div class="card-body">
+                    <h5 class="card-title">${location.name}</h5>
+                    <p class="card-text">${location.description}</p>
+                    <p class="card-text">${location.details_description}</p>
+                    <p class="card-text"><small class="text-muted">Địa chỉ: ${location.address}</small></p>
+                    <p class="card-text"><small class="text-muted">Tọa độ: ${location.latitude}, ${location.longitude}</small></p>
+                </div>
+            `;
+            locationsContainer.appendChild(card);
+        });
+    </script>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Khám Phá Di Tích Lịch Sử</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Thêm CSS từ file gốc của bạn */
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+        }
+
+        /* Header */
+        header {
+            background-color: #2b7a78;
+            color: #ffffff;
+            padding: 15px 15px;
+            text-align: center;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        /* Main layout container */
+        .main-container {
+            display: flex;
+            height: calc(100vh - 60px);
+            /* Adjust height for header */
+        }
+
+        /* Left panel (controls) */
+        .left-panel {
+            width: 35%;
+            padding: 20px;
+            box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+            background-color: #ffffff;
+        }
+
+        .form-group label {
+            font-weight: bold;
+            color: #34495e;
+        }
+
+        .form-control {
+            border-radius: 5px;
+        }
+
+        #startJourney {
+            background-color: #2b7a78;
+            color: #ffffff;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            transition: background-color 0.3s ease;
+            width: 100%;
+        }
+
+        #startJourney:hover {
+            background-color: #3aafa9;
+        }
+
+        /* Right panel (map) */
+        #map {
+            width: 65%;
+            height: 100%;
+            border-left: 3px solid #ddd;
+        }
+
+        .nav-link {
+            font-size: 20px;
+            font-weight: 400;
+        }
+
+        #title {
+            font-family: "Dancing Script", cursive;
+            font-size: 30px;
+        }
+
+        .panel {
+            padding: 10px;
+        }
+
+        #nameOfPage {
+            font-family: "Dancing Script", cursive;
+            font-size: 30px;
+        }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #2b7a78;">
+            <a class="navbar-brand font-weight-bold chunghien" id="title">
+                <img src="https://img.icons8.com/ios-glyphs/30/ffffff/museum.png" alt="Logo" class="mr-2">
+                <span id="nameOfPage">Khám Phá Di Tích Lịch Sử</span>
+            </a>
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/home">Trang Chủ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/ditich">Di Tích</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Hành Trình</a>
+                    </li>
+                    <!-- <li class="nav-item">
+                        <a class="nav-link" href="LayDuLieuToaDo.html">GET Data From API</a>
+                    </li> -->
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <div class="main-container">
+        <div class="left-panel">
+            <div class="form-group">
+                <label for="startingPoint" class="mb-3">Chọn một nơi để làm điểm bắt đầu:</label>
+                <select class="form-control mb-3" id="startingPoint">
+                    <option value="" disabled selected>-- Chọn điểm bắt đầu --</option>
+                    {% for location in locations %}
+                    <option value="{{ loop.index0 }}">{{ location.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button class="btn btn-primary" id="startJourney">Bắt đầu vẽ hành trình</button>
+            <ul id="journeyResultList" class="list-group mt-3"></ul>
+        </div>
+        <div id="map"></div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        const map = L.map('map').setView([10.776075, 106.694288], 13);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+        fetch('/api/locations')
+            .then(response => response.json())
+            .then(data => {
+                const dropdown = document.getElementById('startingPoint');
+                data.forEach((location, index) => {
+                    const option = document.createElement('option');
+                    option.value = index;
+                    option.textContent = location.name;
+                    dropdown.appendChild(option);
+                });
+            });
+
+        document.getElementById('startJourney').addEventListener('click', () => {
+            const startIndex = parseInt(document.getElementById('startingPoint').value);
+            fetch('/api/journey', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ start_index: startIndex })
+            })
+                .then(response => response.json())
+                .then(path => {
+                    map.eachLayer(layer => {
+                        if (layer instanceof L.Marker || layer instanceof L.Polyline) {
+                            map.removeLayer(layer);
+                        }
+                    });
+
+                    const coordinates = path.map(location => [location.latitude, location.longitude]);
+                    L.polyline(coordinates, { color: 'blue' }).addTo(map);
+
+                    path.forEach(location => {
+                        L.marker([location.latitude, location.longitude]).addTo(map)
+                            .bindPopup(`${location.name}<br>${location.address}`);
+                    });
+                });
+        });
+
+    </script>
+</body>
+
+</html>

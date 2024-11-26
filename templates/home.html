@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang Chủ - Khám Phá Di Tích Lịch Sử</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Cố định vị trí header */
+        header {
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1030;
+            font-size: 20px;
+            /* Đặt độ ưu tiên cao để nằm trên các thành phần khác */
+        }
+
+        /* Carousel full height */
+        .carousel,
+        .carousel-inner,
+        .carousel-item {
+            height: 100vh;
+        }
+
+        .carousel-item img {
+            object-fit: cover;
+            height: 100vh;
+            width: 100%;
+        }
+
+        /* Lớp overlay với opacity */
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            /* Đặt màu nền với opacity */
+            z-index: 1;
+            /* Đặt độ ưu tiên để nằm trên ảnh */
+        }
+
+        /* Overlay text */
+        .carousel-caption {
+            position: absolute;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #ffffff;
+            font-size: 2.5em;
+            font-weight: bold;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+            z-index: 2;
+            /* Đặt độ ưu tiên để nằm trên overlay */
+        }
+
+        /* Thêm khoảng cách cho phần nội dung bên dưới header */
+        .content {
+            margin-top: 56px;
+            /* Đặt margin-top để tránh bị che khuất bởi header */
+        }
+
+        #slogan,
+        .chunghien {
+            font-family: "Dancing Script", cursive;
+        }
+
+        #slogan {
+            font-size: 100px;
+        }
+
+        #title {
+            font-size: 30px;
+        }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="icon" href="/image/museum.png" type="image/png">
+
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #2b7a78;">
+            <a class="navbar-brand font-weight-bold chunghien" id="title">
+                <img src="https://img.icons8.com/ios-glyphs/30/ffffff/museum.png" alt="Logo" class="mr-2">
+                <span id="nameOfPage">Khám Phá Di Tích Lịch Sử</span>
+            </a>
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/home">Trang Chủ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/ditich">Di Tích</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Hành Trình</a>
+                    </li>
+                    <!-- <li class="nav-item">
+                        <a class="nav-link" href="LayDuLieuToaDo.html">GET Data From API</a>
+                    </li> -->
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <div class="content">
+        <!-- Carousel Album -->
+        <div id="carouselAlbum" class="carousel slide" data-ride="carousel" data-interval="2000">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="/image/Bao-tang-My-thuat-TP-HCM-ivivu.jpg" alt="Ảnh 1">
+                    <div class="overlay"></div> <!-- Lớp overlay -->
+                </div>
+                <div class="carousel-item">
+                    <img src="/image/hinh dinh doc lap ok.jpg" alt="Ảnh 2">
+                    <div class="overlay"></div> <!-- Lớp overlay -->
+                </div>
+                <div class="carousel-item">
+                    <img src="/image/hinh cho ben thanh.jpg" alt="Ảnh 3">
+                    <div class="overlay"></div> <!-- Lớp overlay -->
+                </div>
+            </div>
+            <!-- Overlay Text -->
+            <div class="carousel-caption chunghien" id="slogan">
+                Yêu Những Cuộc<br> Hành Trình
+            </div>
+
+            <!-- Carousel Controls -->
+            <a class="carousel-control-prev" href="#carouselAlbum" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Trước</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselAlbum" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Sau</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>
