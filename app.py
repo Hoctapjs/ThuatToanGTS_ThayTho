@@ -93,33 +93,37 @@ def calculate_distance(lat1, lon1, lat2, lon2):
     c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
     return R * c
 
-def greedy_tsp(locations, start_index):
-    visited = [False] * len(locations)
-    path = []
-    current_index = start_index
+def greedy_tsp(locations, start_index):  
+    visited = [False] * len(locations)  
+    path = []  
+    current_index = start_index  
 
-    for _ in range(len(locations)):
-        if current_index is not None:
-            path.append(locations[current_index])
-        else:
-            break
-        visited[current_index] = True
-        next_index = -1
-        min_distance = float('inf')
+    for _ in range(len(locations)):  
+        if current_index is not None:  
+            path.append(locations[current_index])  
+        else:  
+            break  
+        visited[current_index] = True  
+        next_index = -1  
+        min_distance = float('inf')  
 
-        for i, location in enumerate(locations):
-            if not visited[i]:
-                distance = calculate_distance(
-                    locations[current_index]["latitude"],
-                    locations[current_index]["longitude"],
-                    location["latitude"],
-                    location["longitude"]
-                )
-                if distance < min_distance:
-                    min_distance = distance
-                    next_index = i
+        for i, location in enumerate(locations):  
+            if not visited[i]:  
+                distance = calculate_distance(  
+                    locations[current_index]["latitude"],  
+                    locations[current_index]["longitude"],  
+                    location["latitude"],  
+                    location["longitude"]  
+                )  
+                if distance < min_distance:  
+                    min_distance = distance  
+                    next_index = i  
 
-        current_index = next_index if next_index != -1 else current_index
+        current_index = next_index if next_index != -1 else current_index  
+
+    # Thêm đường quay lại điểm bắt đầu  
+    if path:  
+        path.append(path[0])  # Thêm điểm bắt đầu vào cuối danh sách  
 
     return path
 
