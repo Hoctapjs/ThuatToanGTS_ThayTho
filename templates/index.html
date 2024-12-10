@@ -155,7 +155,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script>
+    <!-- <script>
         const map = L.map('map').setView([10.776075, 106.694288], 13);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
@@ -220,6 +220,67 @@
                 });
         });
 
+    </script> -->
+    <script>
+        const map = L.map('map').setView([10.776075, 106.694288], 13);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+        fetch('/api/locations')
+            .then(response => response.json())
+            .then(data => {
+                const dropdown = document.getElementById('startingPoint');
+                data.forEach((location, index) => {
+                    const option = document.createElement('option');
+                    option.value = index;
+                    option.textContent = location.name;
+                    dropdown.appendChild(option);
+                });
+            });
+
+        // Mảng để lưu các điểm đã đi qua  
+        let journeyPoints = [];
+
+        document.getElementById('startJourney').addEventListener('click', () => {
+            const startIndex = parseInt(document.getElementById('startingPoint').value);
+            fetch('/api/journey', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ start_index: startIndex })
+            })
+                .then(response => response.json())
+                .then(path => {
+                    map.eachLayer(layer => {
+                        if (layer instanceof L.Marker || layer instanceof L.Polyline) {
+                            map.removeLayer(layer);
+                        }
+                    });
+
+                    // Cập nhật mảng journeyPoints với các điểm trong path  
+                    journeyPoints = path.map(location => location.name); // hoặc một thuộc tính khác nếu phù hợp  
+                    updateJourneyList();
+
+                    const coordinates = path.map(location => [location.latitude, location.longitude]);
+                    L.polyline(coordinates, { color: 'blue' }).addTo(map); // Vẽ đường đi  
+
+                    path.forEach(location => {
+                        L.marker([location.latitude, location.longitude]).addTo(map)
+                            .bindPopup(`${location.name}<br>${location.address}`);
+                    });
+                });
+        });
+
+        function updateJourneyList() {
+            const journeyList = document.getElementById('journeyResultList');
+            journeyList.innerHTML = ''; // Xóa danh sách hiện tại  
+            var i = 1;
+            journeyPoints.forEach(point => {
+                const listItem = document.createElement('li');
+                listItem.className = 'list-group-item';
+                listItem.textContent = `${i}. ${point} `; // Hiển thị tên điểm  
+                journeyList.appendChild(listItem);
+                i++;
+            });
+        }  
     </script>
 </body>
 
